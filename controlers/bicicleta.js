@@ -21,7 +21,6 @@ exports.bicicleta_update_get = function(req, res){
 }
 
 exports.bicicleta_update_post = function(req, res){
-    console.log(req.params.id)
     var bici = Bicicleta.findById(req.params.id)
     bici.id = req.body.id;
     bici.color = req.body.color;

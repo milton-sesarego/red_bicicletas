@@ -4,10 +4,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([-34.6735, -58.6455]).addTo(map)
-    .bindPopup('Marker 1')
-    .openPopup();
-
-L.marker([-34.65, -58.65]).addTo(map)
-    .bindPopup('Marker 2')
-    .openPopup();
+$.ajax({
+    dataType: "json",
+    url: "api/bicicletas",
+    success: function(result){
+        console.log(result);
+        result.bicicletas.forEach(function(bici){
+            console.log(bici.ubicacion)
+            L.marker(bici.ubicacion, {title:bici.id}).addTo(map)
+                .bindPopup("ID: "+bici.id+" | "+bici.modelo+" | "+bici.color)
+                .openPopup();
+        })
+    }
+})
