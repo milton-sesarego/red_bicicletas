@@ -9,7 +9,6 @@ exports.bicicleta_list = function(req, res){
 exports.bicicleta_create = function(req, res){
     var bici = new Bicicleta(req.body.id, req.body.color, req.body.modelo);
     bici.ubicacion = [req.body.lat, req.body.lng];
-
     Bicicleta.add(bici);
     res.status(200).json({bicicleta: bici});
 }
@@ -20,9 +19,15 @@ exports.bicicleta_delete = function(req, res){
 }
 
 exports.bicicleta_update = function(req, res){
-    var bici = Bicicleta.findById(req.body.id)
-    bici.color = req.body.color;
-    bici.modelo = req.body.modelo;
-    bici.ubicacion = [req.body.lat, req.body.lng];
+    var bici = Bicicleta.findById(req.params.id)
+
+    if (!bici){
+        res.status(404).json({});
+    }
+
+    bici.color = req.body.color || bici.color;
+    bici.modelo = req.body.modelo || bici.modelo;
+    bici.ubicacion.lat = req.body.lat || bici.ubicacion.lat;
+    bici.ubicacion.lng = req.body.lng || bici.ubicacion.lng;
     res.status(200).json({bicicleta: bici})
 }
